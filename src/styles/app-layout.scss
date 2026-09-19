@@ -20,13 +20,30 @@
     gap: 4px;
 
     img {
-      width: 60px;
-      height: 60px;
+      size: 48px;
       object-fit: cover;
+    }
+
+    span {
+      color: #e9c563;
+      font-weight: bold;
+      font-size: 24;
     }
   }
 
   .ant-layout-content {
     flex-grow: 1;
+  }
+
+  .profile {
+    &-name {
+      font-weight: bold;
+      line-height: normal;
+    }
+
+    &-email {
+      font-size: 12;
+      line-height: normal;
+    }
   }
 }

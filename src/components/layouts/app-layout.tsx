@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { Avatar, Breadcrumb, Flex, Layout, Space, Typography } from 'antd';
-import Link from 'next/link';
-import Image from 'next/image';
-import type { MenuProps } from 'antd';
-import { Dropdown } from 'antd';
+import { useMemo } from 'react';
+import { Avatar, Dropdown, Flex, Layout, Menu, Typography } from 'antd';
 import { LogoutOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { getActiveRoute, getMenuItems } from '@/lib/route-utils';
 
 const { Header, Content } = Layout;
 const { Text } = Typography;
@@ -14,8 +15,11 @@ const { Text } = Typography;
 const userData = {
   profileImage:
     'https://i.pinimg.com/736x/9d/44/e8/9d44e8cea3432c943a11c88ce9cd28ca.jpg',
+
   firstName: 'Thắng',
+
   lastName: 'Trần',
+
   emailId: 'thangtrn01@gmail.com',
 };
 
@@ -24,8 +28,14 @@ interface AppLayoutProps {
 }
 
 const AppLayout = ({ children }: AppLayoutProps) => {
+  const pathname = usePathname();
+
+  const menuItems = useMemo(() => getMenuItems(), []);
+
+  const activeRoute = useMemo(() => getActiveRoute(pathname), [pathname]);
+
   const settingItems = useMemo(
-    (): MenuProps['items'] => [
+    () => [
       {
         key: 'profile',
         icon: <UsergroupDeleteOutlined />,
@@ -47,54 +57,51 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <Layout className="app-layout">
       <Header>
-        <Link href={'/'} className="app-logo">
+        {/* Logo */}
+        <Link href="/" className="app-logo">
           <Image
             src="/images/pccc-logo.png"
             alt="app logo"
-            width={180}
-            height={180}
+            width={48}
+            height={48}
             loading="eager"
           />
-          <Text style={{ fontSize: 20 }} strong>
-            PCCC&CNCH
-          </Text>
+
+          <Text>PCCC&CNCH</Text>
         </Link>
 
+        {/* User */}
         <Dropdown
-          styles={{ root: { width: 200 } }}
-          arrow
           menu={{
             items: settingItems,
           }}
           trigger={['click']}
+          arrow
         >
-          <Flex align="center" gap={6}>
+          <Flex align="center" gap={6} className="profile">
             <Avatar size={40} src={userData.profileImage} />
-            <Flex orientation="vertical" gap={4}>
-              <Text strong style={{ lineHeight: 1 }}>
+
+            <Flex vertical gap={4}>
+              <Text className="profile-name">
                 {userData.firstName} {userData.lastName}
               </Text>
-              <Text type="secondary" style={{ fontSize: 12, lineHeight: 1 }}>
+
+              <Text type="secondary" className="profile-email">
                 {userData.emailId}
               </Text>
             </Flex>
           </Flex>
         </Dropdown>
       </Header>
-      <Content style={{ padding: '0 48px' }}>
-        <Breadcrumb
-          style={{ margin: '16px 0' }}
-          items={[{ title: 'Home' }, { title: 'List' }, { title: 'App' }]}
-        />
-        <div
-          style={{
-            padding: 24,
-            minHeight: 380,
-          }}
-        >
-          {children}
-        </div>
-      </Content>
+
+      {/* Navigation */}
+      <Menu
+        mode="horizontal"
+        items={menuItems}
+        selectedKeys={activeRoute.selectedKeys}
+      />
+
+      <Content>{children}</Content>
     </Layout>
   );
 };
