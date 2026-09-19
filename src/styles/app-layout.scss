@@ -8,10 +8,11 @@
     left: 0;
     z-index: 10;
     display: flex;
+    padding: 0 16px;
     align-items: center;
     justify-content: space-between;
     background-color: white;
-    box-shadow: var(--ant-box-shadow-tertiary);
+    // box-shadow: var(--ant-box-shadow-tertiary);
   }
 
   .app-logo {
@@ -27,7 +28,16 @@
     span {
       color: #e9c563;
       font-weight: bold;
-      font-size: 24;
+      font-size: 24px;
+      text-shadow:
+        1px 0 #000000,
+        -1px 0 #000000,
+        0 1px #000000,
+        0 -1px #000000,
+        1px 1px #000000,
+        -1px -1px #000000,
+        1px -1px #000000,
+        -1px 1px #000000;
     }
   }
 
@@ -35,15 +45,28 @@
     flex-grow: 1;
   }
 
-  .profile {
-    &-name {
+  .setting {
+    &-title {
       font-weight: bold;
       line-height: normal;
     }
 
-    &-email {
+    &-subtitle {
       font-size: 12;
       line-height: normal;
     }
+  }
+
+  .app-menu {
+    position: sticky;
+    top: 64px;
+    right: 0;
+    left: 0;
+    border-top: 1px solid #eeee;
+    box-shadow: var(--ant-box-shadow-tertiary);
+  }
+
+  .ant-layout-content {
+    padding: 16px;
   }
 }

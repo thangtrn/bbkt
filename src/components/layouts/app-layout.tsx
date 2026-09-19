@@ -15,11 +15,8 @@ const { Text } = Typography;
 const userData = {
   profileImage:
     'https://i.pinimg.com/736x/9d/44/e8/9d44e8cea3432c943a11c88ce9cd28ca.jpg',
-
   firstName: 'Thắng',
-
   lastName: 'Trần',
-
   emailId: 'thangtrn01@gmail.com',
 };
 
@@ -39,7 +36,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       {
         key: 'profile',
         icon: <UsergroupDeleteOutlined />,
-        label: <Link href="/account/settings">Xem hồ sơ</Link>,
+        label: <Link href="/account/settings">Cài đặt tài khoản</Link>,
       },
       {
         type: 'divider' as const,
@@ -58,6 +55,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     <Layout className="app-layout">
       <Header>
         {/* Logo */}
+        <Flex></Flex>
         <Link href="/" className="app-logo">
           <Image
             src="/images/pccc-logo.png"
@@ -75,18 +73,18 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           menu={{
             items: settingItems,
           }}
-          trigger={['click']}
+          // trigger={['click']}
           arrow
         >
-          <Flex align="center" gap={6} className="profile">
+          <Flex align="center" gap={6} className="setting">
             <Avatar size={40} src={userData.profileImage} />
 
             <Flex vertical gap={4}>
-              <Text className="profile-name">
+              <Text className="setting-title">
                 {userData.firstName} {userData.lastName}
               </Text>
 
-              <Text type="secondary" className="profile-email">
+              <Text type="secondary" className="setting-subtitle">
                 {userData.emailId}
               </Text>
             </Flex>
@@ -96,9 +94,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       {/* Navigation */}
       <Menu
+        className="app-menu"
         mode="horizontal"
         items={menuItems}
         selectedKeys={activeRoute.selectedKeys}
+        style={{ height: 40 }}
       />
 
       <Content>{children}</Content>

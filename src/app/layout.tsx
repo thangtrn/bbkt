@@ -5,6 +5,8 @@ import { Roboto } from 'next/font/google';
 
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider, theme } from 'antd';
+import viVN from 'antd/locale/vi_VN';
+import HolyLoader from 'holy-loader';
 
 const roboto = Roboto({
   variable: '--font-roboto',
@@ -19,9 +21,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={`${roboto.variable}`}>
+      <HolyLoader height="3px" easing="linear" showSpinner />
       <body>
         <AntdRegistry>
           <ConfigProvider
+            locale={viVN}
             theme={{
               token: {
                 fontFamily: 'Roboto, sans-serif',

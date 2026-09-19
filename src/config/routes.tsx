@@ -25,22 +25,22 @@ export const ROUTES = [
       {
         id: 'weekly-report',
         label: 'Báo cáo tuần',
-        url: '/weekly-report',
+        url: '/reports/weekly',
       },
       {
         id: 'monthly-report',
         label: 'Báo cáo tháng',
-        url: '/monthly-report',
+        url: '/reports/monthly',
       },
       {
         id: 'quarterly-report',
         label: 'Báo cáo quý',
-        url: '/quarterly-report',
+        url: '/reports/quarterly',
       },
       {
         id: 'yearly-report',
         label: 'Báo cáo năm',
-        url: '/yearly-report',
+        url: '/reports/yearly',
       },
     ],
   },
