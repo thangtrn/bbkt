@@ -1,0 +1,32 @@
+.ant-layout.app-layout {
+  min-height: 100vh;
+
+  .ant-layout-header {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: var(--ant-box-shadow-tertiary);
+  }
+
+  .app-logo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+    }
+  }
+
+  .ant-layout-content {
+    flex-grow: 1;
+  }
+}
