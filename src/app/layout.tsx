@@ -1,4 +1,5 @@
 import '@/styles/index.scss';
+import 'react-data-grid/lib/styles.css';
 
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';

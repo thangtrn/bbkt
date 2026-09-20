@@ -62,8 +62,13 @@
     top: 64px;
     right: 0;
     left: 0;
+    z-index: 10;
     border-top: 1px solid #eeee;
-    box-shadow: var(--ant-box-shadow-tertiary);
+    // box-shadow: var(--ant-box-shadow-tertiary);
+    box-shadow:
+      0 2px 2px -1px rgba(0, 0, 0, 0.08),
+      0 3px 6px -3px rgba(0, 0, 0, 0.06),
+      0 3px 4px -2px rgba(0, 0, 0, 0.05);
   }
 
   .ant-layout-content {
