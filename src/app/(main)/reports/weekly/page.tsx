@@ -1,10 +1,11 @@
 'use client';
 
 import AppDataGrid from '@/components/data-grid/app-data-grid';
+import { AppColumnOrColumnGroup } from '@/components/data-grid/app-data-grid.type';
+import { RowNumberColumn } from '@/components/data-grid/colums';
 import AppCard from '@/components/ui/app-card';
 import { Button, DatePicker, Flex } from 'antd';
 import dayjs from 'dayjs';
-import { ColumnOrColumnGroup } from 'react-data-grid';
 
 const { RangePicker } = DatePicker;
 
@@ -378,7 +379,8 @@ const mockRows: Row[] = [
  * COLUMNS
  * =========================
  */
-const columns: readonly ColumnOrColumnGroup<Row>[] = [
+const columns: readonly AppColumnOrColumnGroup<Row>[] = [
+  RowNumberColumn,
   {
     key: 'tuNgay',
     name: 'Từ ngày',
@@ -484,7 +486,7 @@ const WeeklyReportPage = () => {
       </AppCard>
 
       {/* DATA GRID */}
-      <AppDataGrid fillGrid columns={columns} rows={mockRows} />
+      <AppDataGrid gridType="fill" columns={columns} rows={mockRows} />
     </Flex>
   );
 };

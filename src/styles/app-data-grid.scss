@@ -58,4 +58,14 @@
   .rdg-row .rdg-cell[role='gridcell']:last-child {
     border-right: none;
   }
+
+  .text-center {
+    text-align: center;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .cell-highlight {
+    background-color: #e8f1ff;
+  }
 }
