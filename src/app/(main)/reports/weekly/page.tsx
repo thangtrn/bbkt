@@ -486,7 +486,12 @@ const WeeklyReportPage = () => {
       </AppCard>
 
       {/* DATA GRID */}
-      <AppDataGrid gridType="fill" columns={columns} rows={mockRows} />
+      <AppDataGrid
+        gridType="fill"
+        columns={columns}
+        rows={mockRows}
+        defaultColumnOptions={{ textAlign: 'center' }}
+      />
     </Flex>
   );
 };

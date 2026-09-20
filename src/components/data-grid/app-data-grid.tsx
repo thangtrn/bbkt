@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { useMemo, type Key } from 'react';
-import { DataGrid, DataGridProps } from 'react-data-grid';
+import { DataGrid, DataGridProps, DefaultColumnOptions } from 'react-data-grid';
 import { renderCheckbox } from './cell-renders';
 import { EmptyRowsRenderer } from './empty-row';
-import { AppColumnOrColumnGroup } from './app-data-grid.type';
+import { AppColumnOrColumnGroup, ExtraColumnProps } from './app-data-grid.type';
+import { Maybe } from '@/types';
 
 type AppDataGridProps<R, SR = unknown, K extends Key = Key> = DataGridProps<
   R,
@@ -11,6 +12,9 @@ type AppDataGridProps<R, SR = unknown, K extends Key = Key> = DataGridProps<
   K
 > & {
   columns: readonly AppColumnOrColumnGroup<R, SR>[];
+  defaultColumnOptions?: Maybe<
+    DefaultColumnOptions<NoInfer<R>, NoInfer<SR>> & ExtraColumnProps
+  >;
   gridType?: 'fill' | 'fix';
 };
 
@@ -32,38 +36,44 @@ const AppDataGrid = <R, SR = unknown, K extends Key = Key>(
           };
         }
 
-        const cellClassName = clsx(col.cellClass, {
-          'text-center': col.textAlign === 'center',
-          'text-right': col.textAlign === 'right',
-        });
+        const mergedCol = {
+          textAlign: rest.defaultColumnOptions?.textAlign,
+          ...col,
+        };
 
         return {
-          ...col,
-          cellClass: cellClassName,
+          ...mergedCol,
+          cellClass: clsx(mergedCol.cellClass, {
+            'text-left': mergedCol.textAlign === 'left',
+            'text-center': mergedCol.textAlign === 'center',
+            'text-right': mergedCol.textAlign === 'right',
+          }),
         };
       });
     };
 
     return processColumns(columns);
-  }, [columns]);
+  }, [columns, rest.defaultColumnOptions]);
 
   return (
-    <DataGrid
-      rowHeight={30}
-      columns={internalColumns}
-      {...rest}
-      className={clsx(
-        'app-data-grid',
-        {
-          'fill-grid': gridType === 'fill',
-        },
-        className,
-      )}
-      renderers={{
-        noRowsFallback: <EmptyRowsRenderer />,
-        renderCheckbox,
-      }}
-    />
+    <div className="rdg-container">
+      <DataGrid
+        rowHeight={30}
+        renderers={{
+          noRowsFallback: <EmptyRowsRenderer />,
+          renderCheckbox,
+        }}
+        {...rest}
+        columns={internalColumns}
+        className={clsx(
+          'app-data-grid',
+          {
+            'fill-grid': gridType === 'fill',
+          },
+          className,
+        )}
+      />
+    </div>
   );
 };
 

@@ -13,6 +13,6 @@ export const RowNumberColumn: AppColumn<any, any> = {
   sortable: false,
   frozen: true,
   textAlign: 'center',
-  cellClass: 'cell-highlight',
+  cellClass: 'rdg-cell-highlight',
   renderCell: ({ rowIdx }) => rowIdx + 1,
 };

@@ -17,7 +17,7 @@
 }
 
 // ------ CUSTOM ------
-.table-grid {
+.rdg-container {
   padding: 8px;
   flex-grow: 1;
   background-color: #ffff;
@@ -30,7 +30,7 @@
 }
 
 .app-data-grid {
-  border-radius: 6px;
+  border-radius: 4px;
 
   // override header table
   .rdg-header-row .rdg-cell {
@@ -49,7 +49,6 @@
   }
 
   // override body table
-
   .rdg-row .rdg-cell[role='gridcell'] {
     padding: 0px 8px;
     vertical-align: middle;
@@ -59,13 +58,17 @@
     border-right: none;
   }
 
+  .rdg-cell-highlight {
+    background-color: #e8f1ff;
+  }
+
+  .text-left {
+    text-align: left;
+  }
   .text-center {
     text-align: center;
   }
   .text-right {
     text-align: right;
-  }
-  .cell-highlight {
-    background-color: #e8f1ff;
   }
 }
