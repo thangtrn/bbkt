@@ -384,13 +384,13 @@ const columns: readonly AppColumnOrColumnGroup<Row>[] = [
   {
     key: 'tuNgay',
     name: 'Từ ngày',
-    renderCell: ({ row }) => dayjs(row.tuNgay).format('DD-MM-YYYY'),
+    renderCell: ({ row }) => dayjs(row.tuNgay).format('DD/MM/YYYY'),
   },
 
   {
     key: 'denNgay',
     name: 'đến ngày',
-    renderCell: ({ row }) => dayjs(row.denNgay).format('DD-MM-YYYY'),
+    renderCell: ({ row }) => dayjs(row.denNgay).format('DD/MM/YYYY'),
   },
 
   {
