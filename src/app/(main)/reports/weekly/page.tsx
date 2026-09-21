@@ -446,9 +446,9 @@ const columns: readonly AppColumnOrColumnGroup<Row>[] = [
  */
 const WeeklyReportPage = () => {
   return (
-    <Flex vertical gap={10}>
+    <Flex>
       {/* FILTER */}
-      <AppCard>
+      <AppCard width={300}>
         <Flex gap={6} wrap>
           <RangePicker
             placeholder={['Tuần bắt đầu', 'Tuần kết thúc']}
@@ -487,7 +487,7 @@ const WeeklyReportPage = () => {
 
       {/* DATA GRID */}
       <AppDataGrid
-        gridType="fill"
+        // gridType="fill"
         columns={columns}
         rows={mockRows}
         defaultColumnOptions={{ textAlign: 'center' }}

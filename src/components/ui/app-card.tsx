@@ -1,7 +1,8 @@
 'use client';
 
-import { Card } from 'antd';
+import { Card, type CardProps } from 'antd';
 import { createStyles } from 'antd-style';
+import type { CSSProperties } from 'react';
 
 const useStyles = createStyles(() => ({
   container: {
@@ -11,15 +12,24 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-interface AppCardProps {
-  children: React.ReactNode;
-  className?: string;
-}
+type AppCardProps = CardProps &
+  CSSProperties & {
+    children: React.ReactNode;
+  };
 
-const AppCard = ({ children, className }: AppCardProps) => {
+const AppCard = ({ children, className, ...props }: AppCardProps) => {
   const { styles, cx } = useStyles();
 
-  return <Card className={cx(styles.container, className)}>{children}</Card>;
+  return (
+    <Card
+      className={cx(styles.container, className)}
+      style={{
+        ...props,
+      }}
+    >
+      {children}
+    </Card>
+  );
 };
 
 export default AppCard;
