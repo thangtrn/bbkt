@@ -4,8 +4,16 @@ import AppDataGrid from '@/components/data-grid/app-data-grid';
 import { AppColumnOrColumnGroup } from '@/components/data-grid/app-data-grid.type';
 import { RowNumberColumn } from '@/components/data-grid/colums';
 import AppCard from '@/components/ui/app-card';
+import { StatisticCard } from '@/components/ui/statistic-card';
 import { Button, DatePicker, Flex } from 'antd';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+import { CiBoxes } from 'react-icons/ci';
+import {
+  HiOutlineClipboardDocument,
+  HiOutlineClipboardDocumentList,
+} from 'react-icons/hi2';
+import { LuClipboardCheck } from 'react-icons/lu';
 
 const { RangePicker } = DatePicker;
 
@@ -17,13 +25,23 @@ export interface Row {
   denNgay: Date;
   tuan: string;
 
-  tongBienBan: number;
+  bienBan: number;
   dinhKy: number;
   dotXuat: number;
   nhom1: number;
   nhom2: number;
   huongDan: number;
   soHoa: number;
+}
+
+interface SummaryRow {
+  tongBienBan: number;
+  tongDinhKy: number;
+  tongDotXuat: number;
+  tongNhom1: number;
+  tongNhom2: number;
+  tongHuongDan: number;
+  tongSoHoa: number;
 }
 
 /**
@@ -36,8 +54,8 @@ const mockRows: Row[] = [
     id: '1',
     tuNgay: new Date('2026-09-01'),
     denNgay: new Date('2026-09-07'),
-    tuan: 'Tuần 1',
-    tongBienBan: 25,
+    tuan: '1',
+    bienBan: 25,
     dinhKy: 15,
     dotXuat: 10,
     nhom1: 8,
@@ -49,8 +67,8 @@ const mockRows: Row[] = [
     id: '2',
     tuNgay: new Date('2026-09-08'),
     denNgay: new Date('2026-09-14'),
-    tuan: 'Tuần 2',
-    tongBienBan: 32,
+    tuan: '2',
+    bienBan: 32,
     dinhKy: 20,
     dotXuat: 12,
     nhom1: 10,
@@ -62,8 +80,8 @@ const mockRows: Row[] = [
     id: '3',
     tuNgay: new Date('2026-09-15'),
     denNgay: new Date('2026-09-21'),
-    tuan: 'Tuần 3',
-    tongBienBan: 28,
+    tuan: '3',
+    bienBan: 28,
     dinhKy: 18,
     dotXuat: 10,
     nhom1: 9,
@@ -75,8 +93,8 @@ const mockRows: Row[] = [
     id: '4',
     tuNgay: new Date('2026-09-22'),
     denNgay: new Date('2026-09-28'),
-    tuan: 'Tuần 4',
-    tongBienBan: 35,
+    tuan: '4',
+    bienBan: 35,
     dinhKy: 22,
     dotXuat: 13,
     nhom1: 11,
@@ -88,8 +106,8 @@ const mockRows: Row[] = [
     id: '5',
     tuNgay: new Date('2026-09-29'),
     denNgay: new Date('2026-10-05'),
-    tuan: 'Tuần 5',
-    tongBienBan: 30,
+    tuan: '5',
+    bienBan: 30,
     dinhKy: 19,
     dotXuat: 11,
     nhom1: 10,
@@ -101,8 +119,8 @@ const mockRows: Row[] = [
     id: '6',
     tuNgay: new Date('2026-10-06'),
     denNgay: new Date('2026-10-12'),
-    tuan: 'Tuần 6',
-    tongBienBan: 27,
+    tuan: '6',
+    bienBan: 27,
     dinhKy: 17,
     dotXuat: 10,
     nhom1: 8,
@@ -114,8 +132,8 @@ const mockRows: Row[] = [
     id: '7',
     tuNgay: new Date('2026-10-13'),
     denNgay: new Date('2026-10-19'),
-    tuan: 'Tuần 7',
-    tongBienBan: 40,
+    tuan: '7',
+    bienBan: 40,
     dinhKy: 25,
     dotXuat: 15,
     nhom1: 13,
@@ -127,8 +145,8 @@ const mockRows: Row[] = [
     id: '8',
     tuNgay: new Date('2026-10-20'),
     denNgay: new Date('2026-10-26'),
-    tuan: 'Tuần 8',
-    tongBienBan: 34,
+    tuan: '8',
+    bienBan: 34,
     dinhKy: 21,
     dotXuat: 13,
     nhom1: 11,
@@ -140,8 +158,8 @@ const mockRows: Row[] = [
     id: '9',
     tuNgay: new Date('2026-10-27'),
     denNgay: new Date('2026-11-02'),
-    tuan: 'Tuần 9',
-    tongBienBan: 29,
+    tuan: '9',
+    bienBan: 29,
     dinhKy: 18,
     dotXuat: 11,
     nhom1: 9,
@@ -153,8 +171,8 @@ const mockRows: Row[] = [
     id: '10',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -164,11 +182,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '11',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -178,11 +196,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '12',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -192,11 +210,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '13',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -206,11 +224,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '14',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -220,11 +238,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '15',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -234,11 +252,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '16',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -248,11 +266,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '17',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -262,11 +280,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '18',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -276,11 +294,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '19',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -290,11 +308,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '20',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -304,11 +322,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '21',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -318,11 +336,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '22',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -332,11 +350,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '23',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -346,11 +364,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '24',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -360,11 +378,11 @@ const mockRows: Row[] = [
   },
 
   {
-    id: '10',
+    id: '25',
     tuNgay: new Date('2026-11-03'),
     denNgay: new Date('2026-11-09'),
-    tuan: 'Tuần 10',
-    tongBienBan: 38,
+    tuan: '10',
+    bienBan: 38,
     dinhKy: 24,
     dotXuat: 14,
     nhom1: 12,
@@ -374,66 +392,125 @@ const mockRows: Row[] = [
   },
 ];
 
+const mockSummaryRows: SummaryRow[] = [
+  {
+    tongBienBan: 2747,
+    tongDinhKy: 2716,
+    tongDotXuat: 31,
+    tongNhom1: 1588,
+    tongNhom2: 1159,
+    tongHuongDan: 10611,
+    tongSoHoa: 2710,
+  },
+];
+
+const statistics = [
+  {
+    title: 'Tổng đơn hàng',
+    value: 379,
+    icon: <CiBoxes size={28} color="#0970B8" />,
+  },
+  {
+    title: 'Đơn đã thực hiện',
+    value: 165,
+    icon: <LuClipboardCheck size={28} color="#0970B8" />,
+  },
+  {
+    title: 'Đơn đang thực hiện',
+    value: 175,
+    icon: <HiOutlineClipboardDocumentList size={28} color="#0970B8" />,
+  },
+  {
+    title: 'Đơn chưa thực hiện',
+    value: 39,
+    icon: <HiOutlineClipboardDocument size={28} color="#0970B8" />,
+  },
+];
+
 /**
  * =========================
  * COLUMNS
  * =========================
  */
-const columns: readonly AppColumnOrColumnGroup<Row>[] = [
+const columns: readonly AppColumnOrColumnGroup<Row, SummaryRow>[] = [
   RowNumberColumn,
   {
     key: 'tuNgay',
     name: 'Từ ngày',
+    frozen: true,
     renderCell: ({ row }) => dayjs(row.tuNgay).format('DD/MM/YYYY'),
   },
 
   {
     key: 'denNgay',
     name: 'đến ngày',
+    frozen: true,
     renderCell: ({ row }) => dayjs(row.denNgay).format('DD/MM/YYYY'),
   },
 
   {
     key: 'tuan',
     name: 'Tuần',
+    frozen: true,
   },
 
   {
     name: 'Công tác kiểm tra',
     children: [
       {
-        key: 'tongBienBan',
+        key: 'bienBan',
         name: 'Tổng biên bản',
+        renderSummaryCell({ row }) {
+          return row.tongBienBan;
+        },
       },
 
       {
         key: 'dinhKy',
         name: 'Định kỳ',
+        renderSummaryCell({ row }) {
+          return row.tongDinhKy;
+        },
       },
 
       {
         key: 'dotXuat',
         name: 'Đột xuất',
+        renderSummaryCell({ row }) {
+          return row.tongDotXuat;
+        },
       },
 
       {
         key: 'nhom1',
         name: 'nhóm 1',
+        renderSummaryCell({ row }) {
+          return row.tongNhom1;
+        },
       },
 
       {
         key: 'nhom2',
         name: 'nhóm 2',
+        renderSummaryCell({ row }) {
+          return row.tongNhom2;
+        },
       },
 
       {
         key: 'huongDan',
         name: 'Hướng dẫn',
+        renderSummaryCell({ row }) {
+          return row.tongHuongDan;
+        },
       },
 
       {
         key: 'soHoa',
         name: 'Số Hóa',
+        renderSummaryCell({ row }) {
+          return row.tongSoHoa;
+        },
       },
     ],
   },
@@ -445,13 +522,17 @@ const columns: readonly AppColumnOrColumnGroup<Row>[] = [
  * =========================
  */
 const WeeklyReportPage = () => {
+  const [selectedRows, setSelectedRows] = useState(
+    (): ReadonlySet<string> => new Set(),
+  );
+
   return (
-    <Flex>
+    <Flex gap={12} align="flex-start">
       {/* FILTER */}
-      <AppCard width={300}>
+      <AppCard width={320}>
         <Flex gap={6} wrap>
           <RangePicker
-            placeholder={['Tuần bắt đầu', 'Tuần kết thúc']}
+            placeholder={['bắt đầu', 'kết thúc']}
             format="DD-MM-YYYY"
             presets={[
               {
@@ -459,7 +540,7 @@ const WeeklyReportPage = () => {
                 value: [dayjs(), dayjs()],
               },
               {
-                label: 'Tuần này',
+                label: 'này',
                 value: [dayjs().startOf('week'), dayjs()],
               },
               {
@@ -485,13 +566,32 @@ const WeeklyReportPage = () => {
         </Flex>
       </AppCard>
 
-      {/* DATA GRID */}
-      <AppDataGrid
-        // gridType="fill"
-        columns={columns}
-        rows={mockRows}
-        defaultColumnOptions={{ textAlign: 'center' }}
-      />
+      <Flex orientation="vertical" gap={12} flex={1}>
+        <Flex gap={12}>
+          {statistics.map((item) => (
+            <StatisticCard
+              key={item.title}
+              title={item.title}
+              value={item.value}
+              icon={item.icon}
+            />
+          ))}
+        </Flex>
+
+        {/* DATA GRID */}
+        <AppDataGrid
+          style={{
+            height: 555,
+          }}
+          rowKeyGetter={(row) => row.id}
+          columns={columns}
+          rows={mockRows}
+          topSummaryRows={mockSummaryRows}
+          selectedRows={selectedRows}
+          onSelectedRowsChange={setSelectedRows}
+          defaultColumnOptions={{ textAlign: 'center' }}
+        />
+      </Flex>
     </Flex>
   );
 };

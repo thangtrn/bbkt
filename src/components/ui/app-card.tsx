@@ -7,7 +7,7 @@ import type { CSSProperties } from 'react';
 const useStyles = createStyles(() => ({
   container: {
     '& .ant-card-body': {
-      padding: 8,
+      padding: 12,
     },
   },
 }));

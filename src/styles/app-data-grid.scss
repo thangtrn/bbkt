@@ -18,7 +18,7 @@
 
 // ------ CUSTOM ------
 .rdg-container {
-  padding: 8px;
+  padding: 12px;
   flex-grow: 1;
   background-color: #ffff;
   border-radius: 8px;
@@ -70,5 +70,10 @@
   }
   .text-right {
     text-align: right;
+  }
+
+  .rdg-summary-row .rdg-cell {
+    font-weight: bold;
+    text-align: center;
   }
 }
